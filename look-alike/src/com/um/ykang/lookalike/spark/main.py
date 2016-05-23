@@ -67,7 +67,7 @@ if __name__ == '__main__':
     setPath()
     mconf = MissionConf().setAppName('main')
     msc = MissionContext(conf=mconf)
-    [_, appPath] = msc.getFolder()
+    [_, appPath] = msc.getFolder() 
 #     BashUtil.s3Cp(Quser.TOTAL_QUSER_TXT, payQuserS3Path, recursived=False)
 #     #从last5中计算一个月的优质用户行为
 #     getQuserInLast5Monthly.runJob(payQuserS3Path,
