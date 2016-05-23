@@ -1,0 +1,23 @@
+{
+	"BASE_PATH": "/root/look-alike-new",
+	"payQuser": "s3://datamining.ym/dmuser/ykang/data/spark.ouwan.payQuser.last", 
+	"qUserInLast5EachDay": "s3://datamining.ym/dmuser/ykang/results/qUserInLast5EachDayLast",
+	"tfBeginDay": "2016-05-20",
+	"tfInterval": "90",
+	"tfIsForward": "0",
+	"qUserOpenPackage": "s3://datamining.ym/dmuser/ykang/data/spark.ouwan.qUserOpenPackage.Last",
+	"qPackageDict": "s3://datamining.ym/dmuser/ykang/data/spark.ouwan.qUserOpenPackage.Last",
+	"userOpenPackageWeeklyByGivenQpackage": "s3://datamining.ym/dmuser/ykang/results/userOpenPackageWeeklyByGivenQpackage_2016_04_22_7tian",
+	"candidateBeginDay": "2016-04-22",
+	"candidateInterval": "7",
+	"candidateIsForward": "1", 
+	"trainQuserBeginDay": "2015-12-26",
+	"trainInterval": "35",
+	"trainIsForward": "1",
+	"neg_pos_factor": "4.0",
+	"predictPath": "/root/look-alike-new/data/predict",
+	"qUserPackageToUser": "s3://datamining.ym/dmuser/ykang/results/qUserPackageToUser_2016_01_24_30tian",
+	"userTotalNumber": "s3://datamining.ym/dmuser/ykang/results/userTotalNumber_2016_01_24_30tian"
+}
+
+
