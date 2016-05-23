@@ -24,29 +24,29 @@ if __name__ == '__main__':
     BASE_PATH = paramsConf['BASE_PATH']
     DATA_BASE_PATH = os.path.join(BASE_PATH,'data')
     
-    payQuserS3Path = paramsConf['payQuser']
-    qUserInLast5EachDayS3Path = paramsConf['qUserInLast5EachDay']
-    tfBeginDay = paramsConf['tfBeginDay']
-    tfInterval = paramsConf['tfInterval']
-    tfIsForward = paramsConf['tfIsForward']
-    qUserOpenPackageS3Path = paramsConf['qUserOpenPackage']
-    qUserPackageToUserS3Path = paramsConf['qUserPackageToUser']
-    userTotalNumberS3Path = paramsConf['userTotalNumber']
-    qPackageDictS3Path = paramsConf['qPackageDict']
-    userOpenPackageWeeklyByGivenQpackageS3Path = paramsConf['userOpenPackageWeeklyByGivenQpackage']
-    candidateBeginDay = paramsConf['candidateBeginDay']
-    candidateInterval = paramsConf['candidateInterval']
-    candidateIsForward = paramsConf['candidateIsForward']
+    payQuserS3Path = paramsConf['payQuser'] #支付用户的S3路径
+    qUserInLast5EachDayS3Path = paramsConf['qUserInLast5EachDay'] #从Last5抓取支付用户的行为输出基路径
+    tfBeginDay = paramsConf['tfBeginDay'] #计算TF的起始日期
+    tfInterval = paramsConf['tfInterval'] #计算TF的日期长度
+    tfIsForward = paramsConf['tfIsForward'] #向前还是向后计算
+    qUserOpenPackageS3Path = paramsConf['qUserOpenPackage'] #计算TF的结果，S3输出路径
+    qUserPackageToUserS3Path = paramsConf['qUserPackageToUser'] #计算IDF，每个包的使用人数
+    userTotalNumberS3Path = paramsConf['userTotalNumber'] #计算IDF，总人数
+    qPackageDictS3Path = paramsConf['qPackageDict'] #优质包字典的S3路径
+    userOpenPackageWeeklyByGivenQpackageS3Path = paramsConf['userOpenPackageWeeklyByGivenQpackage'] #取一周Candidates的输出路径
+    candidateBeginDay = paramsConf['candidateBeginDay'] #取Candidates起始日期
+    candidateInterval = paramsConf['candidateInterval'] #日期长度 
+    candidateIsForward = paramsConf['candidateIsForward'] #向前或者向后
     trainQuserBeginDay = paramsConf['trainQuserBeginDay']
-    trainInterval = paramsConf['trainInterval']
-    trainIsForward = paramsConf['trainIsForward']
-    np_factor = float(paramsConf['neg_pos_factor'])
-    predictPath = paramsConf['predictPath']
+    trainInterval = paramsConf['trainInterval'] #训练集的起始日期
+    trainIsForward = paramsConf['trainIsForward'] #训练集的日期长度
+    np_factor = float(paramsConf['neg_pos_factor']) #训练集的负正比例
+    predictPath = paramsConf['predictPath'] #需预测文件的路径
 def setPath():
     Candidate.BASE_PATH = os.path.join(DATA_BASE_PATH, 'candidatesInfo')
     Candidate.CANDIDATES_ID_PICKLE = os.path.join(DATA_BASE_PATH,'dict','candToId.bat')
     Candidate.CANDIDATES_ID_TXT = os.path.join(DATA_BASE_PATH,'dict','candToId.txt')
-    Candidate.PART_FILE_NAME = [os.path.join(Candidate.BASE_PATH,i) for i in os.listdir(Candidate.BASE_PATH)]
+    #Candidate.PART_FILE_NAME = [os.path.join(Candidate.BASE_PATH,i) for i in os.listdir(Candidate.BASE_PATH)]
     Qpackage.QPACKAGE_SCORE_TXT = os.path.join(DATA_BASE_PATH,'dict','qPackageToScore.txt')
     Qpackage.QPACKAGE_ID_TXT = os.path.join(DATA_BASE_PATH,'dict','qPackageToId.txt')
     Quser.QUSER_ID_TXT = os.path.join(DATA_BASE_PATH,'dict','qUserToId.txt')
@@ -58,8 +58,8 @@ def makeFolder():
         os.makedirs(Constance.WORK_SPACE)
     if not os.path.exists(DATA_BASE_PATH):
         os.makedirs(DATA_BASE_PATH)
-        os.mkdir(os.path.join(DATA_BASE_PATH,'dict'))
-        os.mkdir(os.path.join(DATA_BASE_PATH, 'payQualityUsers'))
+        os.mkdir(os.path.join(DATA_BASE_PATH,'dict')) #存放字典目录，qPackage字典的存放路径
+        os.mkdir(os.path.join(DATA_BASE_PATH, 'payQualityUsers')) #优质用户存放路径
         os.mkdir(os.path.join(DATA_BASE_PATH, 'candidatesInfo'))
     
 if __name__ == '__main__':
@@ -68,6 +68,7 @@ if __name__ == '__main__':
     mconf = MissionConf().setAppName('main')
     msc = MissionContext(conf=mconf)
     [_, appPath] = msc.getFolder()
+#     BashUtil.s3Cp(Quser.TOTAL_QUSER_TXT, payQuserS3Path, recursived=False)
 #     #从last5中计算一个月的优质用户行为
 #     getQuserInLast5Monthly.runJob(payQuserS3Path,
 #                                   qUserInLast5EachDayS3Path,
@@ -101,36 +102,15 @@ if __name__ == '__main__':
 #     gbModel = GBClassifierModeling('GBCModeling', Quser.QUSER_OPENPACKAGE_PATH, Candidate.BASE_PATH, Qpackage.getQpackageToId())
 #     gbModel.train(neg_pos_factor=np_factor)
 #     
-#     print gbModel.predict(candPath=predictPath, num_take=100)
+#     print gbModel.predict(candPath=predictPath, num_take=100, each_take=10)
 
 if __name__ == '__main__': #不用TF-IDF
     setPath() 
     makeFolder()
     mconf = MissionConf().setAppName('main')
     msc = MissionContext(conf=mconf)
-    [_, appPath] = msc.getFolder()
-#     f = SepFile('\t').open(os.path.join(appPath, 'kapai.txt'), mode='txt', flag='r')
-#     records = []
-#     for line in f:
-#         output_ = ['', '', '']
-#         deviceId = line[0]
-#         deviceType = line[1]
-#         if deviceType == 'imei':
-#             output_[0] = deviceId
-#         elif deviceType == 'idfa':
-#             output_[1] = deviceId
-#         else:
-#             output_ = None
-#         if output_ != None:
-#             output_[2] = line[2]
-#         records.append(output_)
-#     f.close()
-#     f = LineFile().open(os.path.join(appPath, 'qUserOrigin.txt'), mode='txt', flag='w')
-#     for record in records:
-#         f.writeLine(','.join(record))
-#     f.close()
-#             
-#     BashUtil.s3Cp(os.path.join(appPath, 'kapai.txt'), dst=os.path.join(payQuserS3Path, 'kapai.txt'), recursived=False)
+    [_, appPath] = msc.getFolder()   
+        
 #     #从last5中计算一个月的优质用户行为
 #     getQuserInLast5Monthly.runJob('getQuserInLast5Last', payQuserS3Path,
 #                                 qUserInLast5EachDayS3Path,
